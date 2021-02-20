@@ -71,7 +71,7 @@ public class ServerThread extends Thread{
 	 */
 	public static boolean getID() throws IOException {
 		message = partsMessage[1];
-		for (Employee employee : employeeDao.getIdEmployee()) {
+		for (Employee employee : employeeDao.getEmployee()) {
 			if(Integer.parseInt(message) == employee.get_id()) {
 				return true;
 			}
@@ -79,11 +79,11 @@ public class ServerThread extends Thread{
 		return false;
 	}
 	
-	public static void charge() {
+	public static void getProduct() {
 		
 	}
 	
-	public static void see() {
+	public static void getPurchase() {
 		
 	}
 }

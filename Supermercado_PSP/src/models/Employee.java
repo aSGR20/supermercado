@@ -8,10 +8,6 @@ public class Employee {
 		_id = id;
 		_lastSession = lastSession;
 	}
-	
-	public Employee(int id) {
-		_id = id;
-	}
 
 	public String get_lastSession() {
 		return _lastSession;

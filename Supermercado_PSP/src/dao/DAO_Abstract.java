@@ -32,8 +32,4 @@ public abstract class DAO_Abstract {
             System.out.println("Error al cargar el controlador com.mysql.jdbc.Driver");
         }
     }
-    
-    public abstract ArrayList<Employee> getIdEmployee();
-    
-    public abstract void subirDatos(ArrayList<Object> datos);
 }
