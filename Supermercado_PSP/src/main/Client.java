@@ -29,11 +29,8 @@ public class Client {
 			}
 			// Bucle del menú de cobros, obtener caja y salir
 			while(continuous) {
-				// MENU DE COBROS, MIRAR CAJA...
 				menu();
 			}
-			closeServerThread();
-			client.close();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -64,9 +61,42 @@ public class Client {
 		}
 	}
 	
-	public static void menu() {
+	public static void menu() throws IOException {
 		System.out.println("\n¿Qué desea realizar?");
-		System.out.println("");
+		System.out.println("1. Cobrar compra");
+		System.out.println("2. Obtener la caja del día");
+		String option = teclado.next();
+		try {
+			int op = Integer.parseInt(option);
+			switch(op) {
+			case 1:
+				charge();
+				break;
+			case 2:
+				result();
+				break;
+			case 0:
+				closeServerThread();
+				client.close();
+				break;
+			}
+		}catch (NumberFormatException nfe) {
+			
+		}
+	}
+	
+	public static void charge() {
+		
+		try {
+			dataOutputStream = new DataOutputStream(client.getOutputStream());
+			dataOutputStream.writeUTF(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void result() {
+		
 	}
 	
 	/**
