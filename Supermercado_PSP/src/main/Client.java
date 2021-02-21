@@ -29,11 +29,8 @@ public class Client {
 			}
 			// Bucle del menú de cobros, obtener caja y salir
 			while(continuous) {
-				// MENU DE COBROS, MIRAR CAJA...
 				menu();
 			}
-			closeServerThread();
-			client.close();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -118,6 +115,35 @@ public class Client {
 		int productSelect = teclado.nextInt();
 		System.out.print("¿Cuántas unidades?");
 		int productNumbers = teclado.nextInt();
+		String option = teclado.next();
+		try {
+			int op = Integer.parseInt(option);
+			switch(op) {
+			case 1:
+				charge();
+				break;
+			case 2:
+				result();
+				break;
+			case 0:
+				closeServerThread();
+				client.close();
+				break;
+			}
+		}catch (NumberFormatException nfe) {
+			
+		}
+	}
+	
+	public static void charge() {
+		
+		try {
+			dataOutputStream = new DataOutputStream(client.getOutputStream());
+			dataOutputStream.writeUTF(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+>>>>>>> branch 'master' of https://github.com/aSGR20/supermercado.git
 	}
 	
 	public static void result() {
