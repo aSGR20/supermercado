@@ -31,4 +31,12 @@ public class DAO_Product extends DAO_Abstract {
 		}
 		return countProduct;
 	}
+	
+	public void updateProduct(int id, int amount) {
+		try {
+			stm.executeUpdate("UPDATE supermercado_psp.producto SET `Cantidad_Stock` = `Cantidad_Stock` -" + amount +" WHERE `producto`.`ID_Producto` = " + id +";");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

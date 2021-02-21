@@ -78,6 +78,7 @@ public class Client {
 			switch(op) {
 			case 1:
 				purchaseOne();
+				purchaseTwo();
 				break;
 			case 2:
 				result();
@@ -107,31 +108,28 @@ public class Client {
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-		purchaseTwo();
 	}
 	
 	public static void purchaseTwo() {
-		System.out.print("Seleccione el artículo que desea: ");
-		int productSelect = teclado.nextInt();
-		System.out.print("¿Cuántas unidades?");
-		int productNumbers = teclado.nextInt();
-		String option = teclado.next();
-		try {
-			int op = Integer.parseInt(option);
-			switch(op) {
-			case 1:
-				charge();
-				break;
-			case 2:
-				result();
-				break;
-			case 0:
-				closeServerThread();
-				client.close();
-				break;
+		boolean answerCorrect = false;
+		while(!answerCorrect) {
+			System.out.print("Seleccione el artículo que desea: ");
+			String productSelectString = teclado.next();
+			System.out.print("¿Cuántas unidades? ");
+			String productAmountString = teclado.next();
+			try {
+				int productSelect = Integer.parseInt(productSelectString);
+				int productAmount = Integer.parseInt(productAmountString);
+				answerCorrect = true;
+				try {
+					dataOutputStream = new DataOutputStream(client.getOutputStream());
+					dataOutputStream.writeUTF("cobro;" + productSelect + ";" + productAmount);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} catch (NumberFormatException nfe) {
+				System.out.println("Respuesta incorrecta, escriba solo con dígitos");
 			}
-		}catch (NumberFormatException nfe) {
-			
 		}
 	}
 	
@@ -143,7 +141,6 @@ public class Client {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
->>>>>>> branch 'master' of https://github.com/aSGR20/supermercado.git
 	}
 	
 	public static void result() {

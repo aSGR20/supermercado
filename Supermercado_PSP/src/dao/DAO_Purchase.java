@@ -21,4 +21,8 @@ public class DAO_Purchase extends DAO_Abstract {
 		}
 		return dataPurchase;
 	}
+	
+	public void insertPurchase() {
+		
+	}
 }
