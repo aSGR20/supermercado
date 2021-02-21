@@ -1,8 +1,8 @@
 package main;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
@@ -14,7 +14,7 @@ public class Client {
 	private static Scanner teclado = new Scanner(System.in);
 	private static Socket client;
 	private static DataOutputStream dataOutputStream;
-	private static DataInputStream dataInputStream;
+	private static ObjectInputStream objectInputStream;
 	private static boolean isLoginCorrect = false;
 	private static boolean continuous = true;
 	
@@ -45,6 +45,7 @@ public class Client {
 	 * Metodo que pide por pantalla el ID del empleado con el que cual <br>
 	 * iniciar sesión en la aplicacion
 	 * @throws IOException
+	 * @throws ClassNotFoundException 
 	 */
 	public static void login() throws IOException {
 		// Pide la ID del empleado
@@ -56,17 +57,71 @@ public class Client {
 			dataOutputStream = new DataOutputStream(client.getOutputStream());
 			dataOutputStream.writeUTF("login;"+ id);
 			
-			// Recibe true or false si el ID existe en la BBDD
-			dataInputStream = new DataInputStream(client.getInputStream());
-			isLoginCorrect = dataInputStream.readBoolean();
+			objectInputStream = new ObjectInputStream(client.getInputStream());
+			try {
+				if(!objectInputStream.readObject().equals(null)) {
+					isLoginCorrect = true;
+				}
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
 		} catch (NumberFormatException nfe) {
 			
 		}
 	}
 	
-	public static void menu() {
+	public static void menu() throws IOException {
 		System.out.println("\n¿Qué desea realizar?");
-		System.out.println("");
+		System.out.println("1. Cobrar compra");
+		System.out.println("2. Obtener la caja del día");
+		System.out.println("0. Salir");
+		String option = teclado.next();
+		try {
+			int op = Integer.parseInt(option);
+			switch(op) {
+			case 1:
+				purchaseOne();
+				break;
+			case 2:
+				result();
+				break;
+			case 0:
+				closeServerThread();
+				client.close();
+				System.exit(0);
+				break;
+			}
+		}catch (NumberFormatException nfe) {
+			
+		}
+	}
+	
+	public static void purchaseOne() throws IOException {
+		System.out.println("Lista de Productos:");
+		dataOutputStream = new DataOutputStream(client.getOutputStream());
+		dataOutputStream.writeUTF("productos");
+		objectInputStream = new ObjectInputStream(client.getInputStream());
+		try {
+			Object countProduct = objectInputStream.readObject();
+			int counter = Integer.parseInt(countProduct.toString());
+			for(int i = 0; i < counter ; i++) {
+				System.out.println(objectInputStream.readObject());
+			}
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
+		purchaseTwo();
+	}
+	
+	public static void purchaseTwo() {
+		System.out.print("Seleccione el artículo que desea: ");
+		int productSelect = teclado.nextInt();
+		System.out.print("¿Cuántas unidades?");
+		int productNumbers = teclado.nextInt();
+	}
+	
+	public static void result() {
+		
 	}
 	
 	/**

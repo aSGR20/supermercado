@@ -54,4 +54,8 @@ public class Product {
 	public void set_cantidadStock(int _cantidadStock) {
 		this._cantidadStock = _cantidadStock;
 	}
+	
+	public String toString() {
+		return _id + "\t" + _nombreProducto + "\t" + _cantidadStock + "\t" + _precioVenta + "€";
+	}
 }

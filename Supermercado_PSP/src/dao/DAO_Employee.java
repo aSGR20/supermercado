@@ -22,4 +22,18 @@ public class DAO_Employee extends DAO_Abstract {
         }
         return dataEmployee;
 	}
+	
+	public Object getEmployeeById(int id) {
+		Object employee = new Object();
+		employee = null;
+		try {
+			rs = stm.executeQuery("SELECT * FROM supermercado_psp.empleado WHERE `ID_Empleado` = " + id);
+			while(rs.next()) {
+				employee = rs.getObject(1);
+			}
+		}catch (SQLException ex) {
+			System.out.println("Error en la consulta SQL");
+		}
+		return employee;
+	}
 }

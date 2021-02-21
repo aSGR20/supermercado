@@ -18,4 +18,17 @@ public class DAO_Product extends DAO_Abstract {
 		}
 		return dataProduct;
 	}
+	
+	public Object getCountProduct() {
+		Object countProduct = new Object();
+		try {
+			rs = stm.executeQuery("SELECT COUNT(ID_Producto) FROM supermercado_psp.producto");
+			while(rs.next()) {
+				countProduct = rs.getObject(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return countProduct;
+	}
 }
