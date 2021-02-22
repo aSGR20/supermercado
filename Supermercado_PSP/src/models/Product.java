@@ -14,6 +14,12 @@ public class Product {
 		_precioProveedor = precioProveedor;
 		_cantidadStock = cantidadStock;
 	}
+	
+	public Product (String nombreProducto, int precioVenta, int precioProveedor) {
+		_nombreProducto = nombreProducto;
+		_precioVenta = precioVenta;
+		_precioProveedor = precioProveedor;
+	}
 
 	public int get_id() {
 		return _id;

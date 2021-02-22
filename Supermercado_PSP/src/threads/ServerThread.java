@@ -104,7 +104,7 @@ public class ServerThread extends Thread{
 		int amountProduct = Integer.parseInt(partsMessage[2]);
 		if(amountProduct <= productDao.getStockProduct(idProduct)) {
 			productDao.updateProduct(idProduct, amountProduct);
-			purchaseDao.insertPurchase(idProduct, idEmployee);
+			purchaseDao.insertPurchase(idProduct, amountProduct, idEmployee);
 		} else {
 			// JAVAMAIL
 		}
@@ -112,10 +112,12 @@ public class ServerThread extends Thread{
 	
 	public static void getPurchase() throws IOException{
 		objectOutputStream = new ObjectOutputStream(_clientConnection.getOutputStream());
-		objectOutputStream.writeObject(productDao.getCountProduct());
+		objectOutputStream.writeObject(purchaseDao.getCountPurchaseToday());
 		// OBTENER LA DIFERENCIA DE LOS PRODUCTOS
 		for (Purchase purchase : purchaseDao.getPurchaseToday()) {
-			objectOutputStream.writeObject(purchase.toString());
+			Product product = productDao.getNameAndDifferenceById(purchase.get_idProduct());
+			int difference = (product.get_precioVenta() - product.get_precioProveedor()) * purchase.get_amountProduct();
+			objectOutputStream.writeObject("Compra nº " + purchase.get_id() + "\t||" + "Producto: " + product.get_nombreProducto() + "\t||" + "\tPrecio: " + difference);
 		}
 	}
 }

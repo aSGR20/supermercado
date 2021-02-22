@@ -16,7 +16,7 @@ public class DAO_Purchase extends DAO_Abstract {
 		try {
 			rs = stm.executeQuery("SELECT * FROM supermercado_psp.compra");
 			while (rs.next()) {
-				dataPurchase.add(new Purchase(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4)));
+				dataPurchase.add(new Purchase(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
 			}
 		} catch (SQLException ex) {
 			System.out.println("Error en la consulta SQL");
@@ -24,20 +24,20 @@ public class DAO_Purchase extends DAO_Abstract {
 		return dataPurchase;
 	}
 	
-	public void insertPurchase(int idProduct, int idEmployee) {
+	public void insertPurchase(int idProduct, int amountProduct, int idEmployee) {
 		try {
-			stm.executeUpdate("INSERT INTO supermercado_psp.compra (`Fecha`, `ID_Producto`, `ID_Empleado`) VALUES ('" + dateFormat.format(date) + "', " + idProduct + ", " + idEmployee + ");");
+			stm.executeUpdate("INSERT INTO supermercado_psp.compra (`Fecha`, `ID_Producto`, `Cantidad_Producto`, `ID_Empleado`) VALUES ('" + dateFormat.format(date) + "', " + idProduct + ", " + amountProduct + ", " + idEmployee + ");");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public Object getCountPurchaseToday() {
-		Object countPurchase = new Object();
+	public int getCountPurchaseToday() {
+		int countPurchase = 0;
 		try {
-			rs = stm.executeQuery("SELECT COUNT(ID_Compra) FROM supermercado_psp.compra WHERE Fecha = '" + dateFormat.format(date) + "';");
+			rs = stm.executeQuery("SELECT COUNT(ID_Producto) FROM `compra` WHERE `Fecha` = '" + dateFormat.format(date) + "';");
 			while(rs.next()) {
-				countPurchase = rs.getObject(1);
+				countPurchase = rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -50,7 +50,7 @@ public class DAO_Purchase extends DAO_Abstract {
 		try {
 			rs = stm.executeQuery("SELECT * FROM supermercado_psp.compra WHERE Fecha = '" + dateFormat.format(date) + "';");
 			while(rs.next()) {
-				purchaseToday.add(new Purchase(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4)));
+				purchaseToday.add(new Purchase(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
 			}
 		} catch (SQLException e) {
 			System.out.println("Error en la consulta SQL");

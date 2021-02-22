@@ -4,13 +4,15 @@ public class Purchase {
 	int _id;
 	String _fecha;
 	int _idProduct;
+	int _amountProduct;
 	int _idEmployee;
 	
-	public Purchase(int id, String fecha, int product, int employee) {
+	public Purchase(int id, String fecha, int idProduct, int amountProduct, int idEmployee) {
 		_id = id;
 		_fecha = fecha;
-		_idProduct = product;
-		_idEmployee = employee;
+		_idProduct = idProduct;
+		_amountProduct = amountProduct;
+		_idEmployee = idEmployee;
 	}
 
 	public int get_id() {
@@ -45,6 +47,14 @@ public class Purchase {
 		this._idEmployee = _employee;
 	}
 	
+	public int get_amountProduct() {
+		return _amountProduct;
+	}
+
+	public void set_amountProduct(int _amountProduct) {
+		this._amountProduct = _amountProduct;
+	}
+
 	public String toString() {
 		return "ID Compra: " + _id + "\tID Producto: " + _idProduct + "\tID Empleado: " + _idEmployee;
 	}

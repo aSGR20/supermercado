@@ -18,7 +18,7 @@ public abstract class DAO_Abstract {
         try {
             cn= DriverManager.getConnection(url, user, password);
             stm = cn.createStatement();
-            System.out.println("Conexion realizada");
+            // System.out.println("Conexion realizada");
         } catch (SQLException ex) {
             System.out.println("Error en la conexión");
         }

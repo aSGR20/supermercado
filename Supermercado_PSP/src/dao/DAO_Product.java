@@ -52,4 +52,17 @@ public class DAO_Product extends DAO_Abstract {
 			e.printStackTrace();
 		}
 	}
+
+	public Product getNameAndDifferenceById(int id) {
+		Product nameAndDifference = null;
+		try {
+			rs = stm.executeQuery("SELECT Nombre_Producto, Precio_Venta, Precio_Proveedor FROM supermercado_psp.producto WHERE `ID_Producto` = " + id + ";");
+			while(rs.next()) {
+				nameAndDifference = (new Product(rs.getString(1), rs.getInt(2), rs.getInt(3)));
+			}
+		} catch (SQLException e) {
+			System.out.println("Error en la consulta SQL");
+		}
+		return nameAndDifference;
+	}
 }
