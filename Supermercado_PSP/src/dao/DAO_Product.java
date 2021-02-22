@@ -45,6 +45,32 @@ public class DAO_Product extends DAO_Abstract {
 		return stockProduct;
 	}
 	
+	public String getNameProduct(int idProduct) {
+		String nameProduct = null;
+		try {
+			rs = stm.executeQuery("SELECT Nombre_Producto FROM supermercado_psp.producto WHERE ID_Producto = " + idProduct + ";");
+			while(rs.next()) {
+				nameProduct = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return nameProduct;
+	}
+	
+	public int getPriceSupplierProduct(int idProduct) {
+		int priceSupplier = 0;
+		try {
+			rs = stm.executeQuery("SELECT Precio_Proveedor FROM supermercado_psp.producto WHERE ID_Producto = " + idProduct + ";");
+			while(rs.next()) {
+				priceSupplier = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return priceSupplier;
+	}
+	
 	public void updateProduct(int id, int amount) {
 		try {
 			stm.executeUpdate("UPDATE supermercado_psp.producto SET Cantidad_Stock = Cantidad_Stock -" + amount +" WHERE ID_Producto = " + id +";");

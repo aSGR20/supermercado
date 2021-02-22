@@ -20,8 +20,8 @@ public class Server {
 				while(true) {
 						// Inicializo la conexion con el cliente
 						Socket clientConnection = null;
-						// Espero a obtener la conexion con el cliente
 						try {
+							// Espero a obtener la conexion con el cliente
 							clientConnection = server.accept();
 						} catch (IOException e) {
 							e.printStackTrace();

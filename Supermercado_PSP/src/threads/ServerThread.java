@@ -4,9 +4,13 @@ import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import dao.*;
 import models.*;
+import controller.*;
 
 public class ServerThread extends Thread{
 	
@@ -14,11 +18,13 @@ public class ServerThread extends Thread{
 	private static DataInputStream dataInputStream;
 	private static ObjectOutputStream objectOutputStream;
 	private static String message;
+	private static String email;
 	private static int idEmployee;
 	private static String[] partsMessage;
 	private static DAO_Employee employeeDao;
 	private static DAO_Product productDao;
 	private static DAO_Purchase purchaseDao;
+	private static Controller_XML xmlController;
 	
 	public ServerThread (Socket clientConnection) {
 		_clientConnection = clientConnection;
@@ -29,7 +35,10 @@ public class ServerThread extends Thread{
 		employeeDao = new DAO_Employee();
 		productDao = new DAO_Product();
 		purchaseDao = new DAO_Purchase();
+		xmlController = new Controller_XML();
+		email = xmlController.getCorreo();
 		
+		// Mientras la conexion con el cliente no se haya cerrado, el servidor estará escuchando
 		while(!_clientConnection.isClosed()) {
 			try {
 				dataInputStream = new DataInputStream(_clientConnection.getInputStream());
@@ -47,6 +56,9 @@ public class ServerThread extends Thread{
 		}
 	}
 	
+	/**
+	 * Menu que analiza el mensaje recibido y dependiendo de lo que contenga, llama a un metodo u otro
+	 */
 	public static void menu() {
 		if(!partsMessage.equals(null)) {
 			if (partsMessage[0].equals("login")) {
@@ -54,6 +66,9 @@ public class ServerThread extends Thread{
 					if(getID()) {
 						objectOutputStream = new ObjectOutputStream(_clientConnection.getOutputStream());
 						objectOutputStream.writeObject(employeeDao.getEmployeeById(Integer.parseInt(partsMessage[1])));
+					} else {
+						objectOutputStream = new ObjectOutputStream(_clientConnection.getOutputStream());
+						objectOutputStream.writeObject(null);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -80,6 +95,11 @@ public class ServerThread extends Thread{
 		}
 	}
 	
+	/**
+	 * Metodo que obtiene la ID y en caso de existir, devuelve un true
+	 * @return
+	 * @throws IOException
+	 */
 	public static boolean getID() throws IOException {
 		message = partsMessage[1];
 		for (Employee employee : employeeDao.getEmployee()) {
@@ -106,14 +126,17 @@ public class ServerThread extends Thread{
 			productDao.updateProduct(idProduct, amountProduct);
 			purchaseDao.insertPurchase(idProduct, amountProduct, idEmployee);
 		} else {
-			// JAVAMAIL
+			java.util.Date date = new Date();
+			DateFormat dateFormat = new SimpleDateFormat("HH-mm");
+			Controller_JavaMail javaMailController = new Controller_JavaMail();
+			javaMailController.sendEmail(email, productDao.getNameProduct(idProduct), "El producto \"" + productDao.getNameProduct(idProduct) + 
+					"\" se ha quedado sin stock a las " + dateFormat.format(date) + ". Le recordamos que el precio del producto es de: " + productDao.getPriceSupplierProduct(idProduct) + "€.");
 		}
 	}
 	
 	public static void getPurchase() throws IOException{
 		objectOutputStream = new ObjectOutputStream(_clientConnection.getOutputStream());
 		objectOutputStream.writeObject(purchaseDao.getCountPurchaseToday());
-		// OBTENER LA DIFERENCIA DE LOS PRODUCTOS
 		for (Purchase purchase : purchaseDao.getPurchaseToday()) {
 			Product product = productDao.getNameAndDifferenceById(purchase.get_idProduct());
 			int difference = (product.get_precioVenta() - product.get_precioProveedor()) * purchase.get_amountProduct();

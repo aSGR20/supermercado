@@ -23,11 +23,13 @@ public class Client {
 			// Conexion con el servidor
 			client = new Socket(host, port);
 			login();
+			
+			// Mientras el Login sea incorrecto, vuelve a pedir el login
 			while(!isLoginCorrect) {
 				System.out.println("\tID del empleado Incorrecto\n");
 				login();
 			}
-			// Bucle del menú de cobros, obtener caja y salir
+			// Mientras 
 			while(continuous) {
 				menu();
 			}
@@ -53,10 +55,15 @@ public class Client {
 			// Envia la ID al servidor
 			dataOutputStream = new DataOutputStream(client.getOutputStream());
 			dataOutputStream.writeUTF("login;"+ id);
+			// Obtiene un objeto de empleado
 			objectInputStream = new ObjectInputStream(client.getInputStream());
+			// Si el empleado no es NULL, el login es correcto
 			try {
-				if(!objectInputStream.readObject().equals(null)) {
+				Object login = objectInputStream.readObject();
+				if(login != null) {
 					isLoginCorrect = true;
+				} else {
+					isLoginCorrect = false;
 				}
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
@@ -66,6 +73,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Metodo que imprime por pantalla las diferentes opciones de puede realizar el programa
+	 * @throws IOException
+	 */
 	public static void menu() throws IOException {
 		System.out.println("\n¿Qué desea realizar?");
 		System.out.println("1. Cobrar compra");
@@ -93,6 +104,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Muestra por pantalla los diferentes productos que existen
+	 * @throws IOException
+	 */
 	public static void purchaseOne() throws IOException {
 		System.out.println("Lista de Productos:");
 		dataOutputStream = new DataOutputStream(client.getOutputStream());
@@ -109,6 +124,9 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Muestra por pantalla el artículo y la cantidad que va a vender
+	 */
 	public static void purchaseTwo() {
 		boolean answerCorrect = false;
 		while(!answerCorrect) {
@@ -132,6 +150,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Muestra la caja del dia
+	 * @throws IOException
+	 */
 	public static void result() throws IOException {
 		System.out.println("La caja del día:");
 		dataOutputStream = new DataOutputStream(client.getOutputStream());
