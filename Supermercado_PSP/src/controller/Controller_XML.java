@@ -16,6 +16,10 @@ import org.xml.sax.SAXException;
 public class Controller_XML {
 	public Controller_XML() { }
 	
+	/**
+	 * Obtiene el correo del fichero App.config
+	 * @return
+	 */
 	public String getCorreo() {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		String email = "";

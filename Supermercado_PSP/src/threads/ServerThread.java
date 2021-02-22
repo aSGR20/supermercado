@@ -46,6 +46,7 @@ public class ServerThread extends Thread{
 				if(!partsMessage[0].equals("exit")) {
 					menu();
 				} else {
+					updateEmployee();
 					_clientConnection.close();
 					dataInputStream.close();
 					objectOutputStream.close();
@@ -111,6 +112,10 @@ public class ServerThread extends Thread{
 		return false;
 	}
 	
+	/**
+	 * Metodo que obtiene los productos que existen y los envia al cliente
+	 * @throws IOException
+	 */
 	public static void getProduct() throws IOException {
 		objectOutputStream = new ObjectOutputStream(_clientConnection.getOutputStream());
 		objectOutputStream.writeObject(productDao.getCountProduct());
@@ -119,6 +124,11 @@ public class ServerThread extends Thread{
 		}
 	}
 	
+	/**
+	 * Metodo que actualiza la cantidad de stock sacada <br>
+	 * e introduce la compra realizada
+	 * @throws IOException
+	 */
 	public static void updateProduct() throws IOException {
 		int idProduct = Integer.parseInt(partsMessage[1]);
 		int amountProduct = Integer.parseInt(partsMessage[2]);
@@ -134,6 +144,11 @@ public class ServerThread extends Thread{
 		}
 	}
 	
+	/**
+	 * Metodo que obtiene las compras realizadas hoy y <br>
+	 * envia al cliente las compras
+	 * @throws IOException
+	 */
 	public static void getPurchase() throws IOException{
 		objectOutputStream = new ObjectOutputStream(_clientConnection.getOutputStream());
 		objectOutputStream.writeObject(purchaseDao.getCountPurchaseToday());
@@ -142,5 +157,13 @@ public class ServerThread extends Thread{
 			int difference = (product.get_precioVenta() - product.get_precioProveedor()) * purchase.get_amountProduct();
 			objectOutputStream.writeObject("Compra nº " + purchase.get_id() + "\t||" + "Producto: " + product.get_nombreProducto() + "\t||" + "\tPrecio: " + difference);
 		}
+	}
+	
+	/**
+	 * Actualiza la ultima hora de empleado
+	 * @throws IOException
+	 */
+	public static void updateEmployee() throws IOException {
+		employeeDao.insertLastSession(idEmployee);
 	}
 }

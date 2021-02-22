@@ -11,6 +11,10 @@ public class DAO_Purchase extends DAO_Abstract {
 	java.util.Date date = new Date();
 	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
+	/**
+	 * Obtiene todas las compras de la base de datos
+	 * @return
+	 */
 	public ArrayList<Purchase> getPurchase(){
 		ArrayList<Purchase> dataPurchase = new ArrayList<>();
 		try {
@@ -24,6 +28,12 @@ public class DAO_Purchase extends DAO_Abstract {
 		return dataPurchase;
 	}
 	
+	/**
+	 * Guarda la compra en la base de datos 
+	 * @param idProduct
+	 * @param amountProduct
+	 * @param idEmployee
+	 */
 	public void insertPurchase(int idProduct, int amountProduct, int idEmployee) {
 		try {
 			stm.executeUpdate("INSERT INTO supermercado_psp.compra (`Fecha`, `ID_Producto`, `Cantidad_Producto`, `ID_Empleado`) VALUES ('" + dateFormat.format(date) + "', " + idProduct + ", " + amountProduct + ", " + idEmployee + ");");
@@ -32,6 +42,10 @@ public class DAO_Purchase extends DAO_Abstract {
 		}
 	}
 	
+	/**
+	 * Obtiene la cantidad de compras de hoy
+	 * @return
+	 */
 	public int getCountPurchaseToday() {
 		int countPurchase = 0;
 		try {
@@ -45,6 +59,10 @@ public class DAO_Purchase extends DAO_Abstract {
 		return countPurchase;
 	}
 	
+	/**
+	 * Obtiene las compras de hoy
+	 * @return
+	 */
 	public ArrayList<Purchase> getPurchaseToday() {
 		ArrayList<Purchase> purchaseToday = new ArrayList<>();
 		try {

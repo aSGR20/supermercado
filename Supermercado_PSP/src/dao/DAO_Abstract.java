@@ -27,7 +27,7 @@ public abstract class DAO_Abstract {
     static {
         try {
             Class.forName(controller);
-            System.out.println("Controlador Cargado");
+            // System.out.println("Controlador Cargado");
         } catch (ClassNotFoundException e) {
             System.out.println("Error al cargar el controlador com.mysql.jdbc.Driver");
         }

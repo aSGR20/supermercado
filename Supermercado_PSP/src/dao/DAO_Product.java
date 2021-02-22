@@ -6,6 +6,10 @@ import models.*;
 
 public class DAO_Product extends DAO_Abstract {
 
+	/**
+	 * Obtiene todos los productos de la base de datos
+	 * @return
+	 */
 	public ArrayList<Product> getProduct() {
 		ArrayList<Product> dataProduct = new ArrayList<>();
 		try {
@@ -19,6 +23,10 @@ public class DAO_Product extends DAO_Abstract {
 		return dataProduct;
 	}
 	
+	/**
+	 * Obtiene la cantidad de productos que existen en la base de datos
+	 * @return
+	 */
 	public Object getCountProduct() {
 		Object countProduct = new Object();
 		try {
@@ -32,6 +40,11 @@ public class DAO_Product extends DAO_Abstract {
 		return countProduct;
 	}
 	
+	/**
+	 * Obtiene el numero de stocks de la base de datos de un producto  
+	 * @param idProduct
+	 * @return
+	 */
 	public int getStockProduct(int idProduct) {
 		int stockProduct = 0;
 		try {
@@ -45,6 +58,11 @@ public class DAO_Product extends DAO_Abstract {
 		return stockProduct;
 	}
 	
+	/**
+	 * Obtiene el nombre del producto mediante su id 
+	 * @param idProduct
+	 * @return
+	 */
 	public String getNameProduct(int idProduct) {
 		String nameProduct = null;
 		try {
@@ -58,6 +76,11 @@ public class DAO_Product extends DAO_Abstract {
 		return nameProduct;
 	}
 	
+	/**
+	 * Obtiene el precio del proveedor mediante su id
+	 * @param idProduct
+	 * @return
+	 */
 	public int getPriceSupplierProduct(int idProduct) {
 		int priceSupplier = 0;
 		try {
@@ -71,6 +94,11 @@ public class DAO_Product extends DAO_Abstract {
 		return priceSupplier;
 	}
 	
+	/**
+	 * Actualiza la cantidad de stock de un producto
+	 * @param id
+	 * @param amount
+	 */
 	public void updateProduct(int id, int amount) {
 		try {
 			stm.executeUpdate("UPDATE supermercado_psp.producto SET Cantidad_Stock = Cantidad_Stock -" + amount +" WHERE ID_Producto = " + id +";");
@@ -79,6 +107,11 @@ public class DAO_Product extends DAO_Abstract {
 		}
 	}
 
+	/**
+	 * Obtiene el nombre y los precios mediante la id de un producto
+	 * @param id
+	 * @return
+	 */
 	public Product getNameAndDifferenceById(int id) {
 		Product nameAndDifference = null;
 		try {

@@ -14,10 +14,19 @@ public class Controller_JavaMail {
 	
 	public Controller_JavaMail() { }
 	
+	// Gracias a la ayuda de Alvaro
+	/**
+	 * Envia el correo hacia al correo de App.config
+	 * @param to
+	 * @param subject
+	 * @param body
+	 */
 	public void sendEmail(String to, String subject, String body) {
+		// Inicializa las variables
 		String from = "enviarcorreossgr@gmail.com";
 		String passwd = "Passswrd";
 		
+		// Setea las propiedades de JavaMail
 		Properties properties = new Properties();
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
